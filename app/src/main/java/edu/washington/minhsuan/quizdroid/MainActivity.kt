@@ -19,6 +19,9 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Title", "Math")
             intent.putExtra("Overview", "This is intended to test your basic knowledge of Math.\n\n" +
                     "There is 1 question")
+            intent.putExtra("Questions", arrayOf("1 + 1 = ?"))
+            intent.putExtra("Answers", arrayOf("1", "2", "3", "4"))
+            intent.putExtra("Correct", 1)
             startActivity(intent)
         }
 
@@ -28,6 +31,9 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Title", "Physics")
             intent.putExtra("Overview", "This is intended to test your basic knowledge of Physics\n\n" +
                     "There is 1 question")
+            intent.putExtra("Questions", arrayOf("With the increase of pressure, the boiling point of any substance:"))
+            intent.putExtra("Answers", arrayOf("Increases", "Decreases", "Remains Same", "Becomes zero"))
+            intent.putExtra("Correct", 0)
             startActivity(intent)
         }
 
@@ -37,6 +43,9 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Title", "Marvel Super Heroes")
             intent.putExtra("Overview", "This is intended to test your basic knowledge of Marvel Super Heroes\n\n" +
                     "There is 1 question")
+            intent.putExtra("Questions", arrayOf("Which super hero is turned into dust in Avengers: Infinity War"))
+            intent.putExtra("Answers", arrayOf("Iron Man", "Spider-Man", "Thor", "Nebula"))
+            intent.putExtra("Correct", 1)
             startActivity(intent)
         }
     }

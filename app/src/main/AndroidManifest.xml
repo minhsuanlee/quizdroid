@@ -28,6 +28,12 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="edu.washington.minhsuan.quizdroid.TopicActivity" />
         </activity>
+        <activity android:name=".AnswerActivity">
+            <!-- for action bar back -->
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="edu.washington.minhsuan.quizdroid.QuestionActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -5,12 +5,13 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="30dp"
         tools:context=".QuestionActivity">
     <TextView
-            android:text="@string/lets_take_a_quiz"
+            android:text="@string/question_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtQuizTitle"
+            android:id="@+id/txtQuestionNumber"
             app:layout_constraintStart_toStartOf="@+id/glineV50"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
@@ -34,31 +35,19 @@
                                           android:orientation="horizontal"
                                           app:layout_constraintGuide_percent=".2"/>
     <TextView
-            android:text="@string/select_a_topic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtTopics"
+            android:id="@+id/txtQuestion"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="@+id/glineV20"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/glineH30"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/glineV10"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:textSize="23sp"/>
-    <android.support.constraint.Guideline android:layout_width="wrap_content"
-                                          android:layout_height="wrap_content"
-                                          android:id="@+id/glineH30"
-                                          android:orientation="horizontal"
-                                          app:layout_constraintGuide_percent=".3"/>
-    <android.support.constraint.Guideline android:layout_width="wrap_content"
-                                          android:layout_height="wrap_content"
-                                          android:id="@+id/glineH40"
-                                          android:orientation="horizontal"
-                                          app:layout_constraintGuide_percent=".4"/>
+            android:textSize="23sp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/glineH60"
+            app:layout_constraintEnd_toStartOf="@+id/glineV90" tools:text="Question"/>
     <android.support.constraint.Guideline android:layout_width="wrap_content"
                                           android:layout_height="wrap_content"
                                           android:id="@+id/glineV10"
@@ -69,54 +58,74 @@
                                           android:id="@+id/glineV90"
                                           android:orientation="vertical"
                                           app:layout_constraintGuide_percent=".9"/>
-    <Button
-            android:text="@string/math"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnMath"
-            app:layout_constraintEnd_toStartOf="@+id/glineV50"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintStart_toStartOf="@+id/glineV50"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="@+id/glineH30"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/glineH40"/>
-    <Button
-            android:text="@string/physics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnPhysics"
-            app:layout_constraintEnd_toStartOf="@+id/glineV50"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintStart_toStartOf="@+id/glineV50"
-            app:layout_constraintHorizontal_bias="0.458"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/glineH50"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="@+id/glineH40"/>
-    <Button
-            android:text="@string/marvel_super_heros"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnMarvelHeroes"
-            app:layout_constraintEnd_toStartOf="@+id/glineV50"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintStart_toStartOf="@+id/glineV50"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="@+id/glineH50"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/glineH60"/>
-    <android.support.constraint.Guideline android:layout_width="wrap_content"
-                                          android:layout_height="wrap_content"
-                                          android:id="@+id/glineH50"
-                                          android:orientation="horizontal"
-                                          app:layout_constraintGuide_percent=".5"/>
     <android.support.constraint.Guideline android:layout_width="wrap_content"
                                           android:layout_height="wrap_content"
                                           android:id="@+id/glineH60"
                                           android:orientation="horizontal"
-                                          app:layout_constraintGuide_percent=".6"/>
+                                          app:layout_constraintGuide_percent=".5"/>
+    <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/glineV90"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintStart_toStartOf="@+id/glineV10"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="@+id/glineH60" app:layout_constraintBottom_toTopOf="@+id/glineH80"
+            android:id="@+id/radioAnswers">
+
+        <RadioButton
+                android:id="@+id/radioA1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Answer1"/>
+
+        <RadioButton
+                android:id="@+id/radioA2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Answer2"/>
+
+        <RadioButton
+                android:id="@+id/radioA3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Answer3"/>
+
+        <RadioButton
+                android:id="@+id/radioA4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Answer4"/>
+
+    </RadioGroup>
+
+    <android.support.constraint.Guideline android:layout_width="wrap_content"
+                                          android:layout_height="wrap_content"
+                                          android:id="@+id/glineH95"
+                                          android:orientation="horizontal"
+                                          app:layout_constraintGuide_percent=".95"/>
+    <android.support.constraint.Guideline android:layout_width="wrap_content"
+                                          android:layout_height="wrap_content"
+                                          android:id="@+id/glineH80"
+                                          android:orientation="horizontal"
+                                          app:layout_constraintGuide_percent=".8"/>
+    <Button
+            android:text="@string/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSubmit"
+            app:layout_constraintEnd_toStartOf="@+id/glineV50"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintStart_toStartOf="@+id/glineV50"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/glineH95"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="@+id/glineH80" android:visibility="invisible"/>
+
+
 </android.support.constraint.ConstraintLayout>
