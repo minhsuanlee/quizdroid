@@ -20,7 +20,7 @@ class TopicActivity : AppCompatActivity() {
 
         var questions: Array<String>
         var answers: Array<String>
-        var correctIndex: Int
+        var corrects: Array<String>
         var titleMsg: String
 
         intent.extras.apply {
@@ -35,7 +35,7 @@ class TopicActivity : AppCompatActivity() {
 
             questions = this.getStringArray("Questions")
             answers = this.getStringArray("Answers")
-            correctIndex = this.getInt("Correct")
+            corrects = this.getStringArray("Correct")
         }
 
         val beginButton = findViewById<Button>(R.id.btnBegin)
@@ -44,7 +44,9 @@ class TopicActivity : AppCompatActivity() {
             intent.putExtra("Title", titleMsg)
             intent.putExtra("Questions", questions)
             intent.putExtra("Answers", answers)
-            intent.putExtra("Correct", correctIndex)
+            intent.putExtra("Correct", corrects)
+            intent.putExtra("CurrentIndex", 0)
+            intent.putExtra("TotalCorrect", 0)
             startActivity(intent)
         }
     }

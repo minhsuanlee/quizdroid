@@ -3,6 +3,7 @@ package edu.washington.minhsuan.quizdroid
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
@@ -22,8 +23,10 @@ class QuestionActivity : AppCompatActivity() {
 
         var questionsMsg: Array<String>
         var answersMsg: Array<String>
-        var correctIndex: Int
+        var corrects: Array<String>
         var titleMsg: String
+        var currentIndex: Int
+        var total: Int
 
         val submitButton = findViewById<Button>(R.id.btnSubmit)
         val radioG = findViewById<RadioGroup>(R.id.radioAnswers)
@@ -35,10 +38,12 @@ class QuestionActivity : AppCompatActivity() {
 
             questionsMsg = this.getStringArray("Questions")
             answersMsg = this.getStringArray("Answers")
-            correctIndex = this.getInt("Correct")
+            corrects = this.getStringArray("Correct")
+            currentIndex = this.getInt("CurrentIndex") // current question index
+            total = this.getInt("TotalCorrect")
         }
 
-        populateQuestion(questionsMsg!![0])
+        populateQuestion(questionsMsg!![currentIndex])
 
         radioG.setOnCheckedChangeListener { group, checkedId ->
             submitButton.visibility = View.VISIBLE
@@ -50,13 +55,17 @@ class QuestionActivity : AppCompatActivity() {
 
             val intent = Intent(this@QuestionActivity, AnswerActivity::class.java)
             intent.putExtra("Title", titleMsg)
-            intent.putExtra("Correct", answersMsg[correctIndex])
+            intent.putExtra("CorrectAns", corrects[currentIndex])
             intent.putExtra("UserAnswer", radioButton.text)
-            intent.putExtra("hasNext", false)
+            intent.putExtra("CurrentIndex", currentIndex)
+            intent.putExtra("Questions", questionsMsg)
+            intent.putExtra("Answers", answersMsg)
+            intent.putExtra("Correct", corrects)
+            intent.putExtra("TotalCorrect", total)
             startActivity(intent)
         }
 
-        populateAnswers(answersMsg, radioG)
+        populateAnswers(answersMsg, radioG, currentIndex)
     }
 
     private fun populateQuestion(question: String) {
@@ -65,11 +74,13 @@ class QuestionActivity : AppCompatActivity() {
         questionTxt.gravity = Gravity.CENTER
     }
 
-    private fun populateAnswers(answers: Array<String>, radioG: RadioGroup) {
-        for (i in 1..radioG.childCount) {
-            var btn = radioG.getChildAt(i - 1)
+    private fun populateAnswers(answers: Array<String>, radioG: RadioGroup, currentIndex: Int) {
+        val numAnswers = radioG.childCount
+        for (i in 0..numAnswers) {
+            var btn = radioG.getChildAt(i)
             if (btn != null) {
-                (btn as RadioButton).text = answers[i - 1]
+                Log.v(TAG, answers[i + currentIndex * numAnswers])
+                (btn as RadioButton).text = answers[i + currentIndex * numAnswers]
             }
         }
 
