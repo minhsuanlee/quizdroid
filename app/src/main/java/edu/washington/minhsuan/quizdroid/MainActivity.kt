@@ -24,10 +24,14 @@ class MainActivity : AppCompatActivity() {
             "25.3", "25.5", "25.0", "12.25"
         )
         val mathCorrect = arrayOf("2", "6", "25.5")
+        val mathOverview = getOverview("Math", mathQuestions.size)
+        saveTopicInRepository("Math", mathOverview, mathQuestions, mathAnswers, mathCorrect)
 
         val physicsQuestions = arrayOf("With the increase of pressure, the boiling point of any substance:")
         val physicsAnswers = arrayOf("Increases", "Decreases", "Remains Same", "Becomes zero")
         val physicsCorrect = arrayOf("Increases")
+        val physicsOverview = getOverview("Physics", physicsQuestions.size)
+        saveTopicInRepository("Physics", physicsOverview, physicsQuestions, physicsAnswers, physicsCorrect)
 
         val marvelQuestions = arrayOf(
             "Which super hero is turned into dust in Avengers: Infinity War",
@@ -44,6 +48,8 @@ class MainActivity : AppCompatActivity() {
             "Sheild", "Axe", "Sword", "Gun"
         )
         val marvelCorrect = arrayOf("Spider-Man", "4", "Light Stone", "Wakanda", "Sheild")
+        val marvelOverview = getOverview("Math", marvelQuestions.size)
+        saveTopicInRepository("Marvel Super Heroes", marvelOverview, marvelQuestions, marvelAnswers, marvelCorrect)
 
         val mathButton = findViewById<Button>(R.id.btnMath)
         mathButton.setOnClickListener {
@@ -85,8 +91,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getOverview(topic: String, number: Int, unit: String): String {
+    private fun getOverview(topic: String, number: Int): String {
+        val unit = if (number == 1) " is " else " are "
         return "This is intended to test your basic knowledge of $topic\n\n" +
                 "There$unit$number question(s)"
+    }
+
+    fun saveTopicInRepository(title: String, overview: String, questions: Array<String>,
+                              answers: Array<String>, correct: Array<String>) {
+        // get singleton of app
+        val singletonApp = QuizApp.instance
+
+        // get repository
+        val topicRepository = singletonApp.dataManager
+
+        // add name to repository
+        topicRepository.add(title, overview, questions, answers, correct)
     }
 }
