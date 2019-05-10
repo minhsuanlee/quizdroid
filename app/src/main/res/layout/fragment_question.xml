@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".QuestionFragment">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:gravity="center|top" android:id="@+id/linearLayoutQuestion">
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="84dp"/>
+        <TextView
+                android:text="@string/question_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtQuestionNumber"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtQuestion"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:textSize="23sp"
+                android:layout_marginBottom="8dp"
+                tools:text="Question"/>
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="39dp"/>
+        <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:id="@+id/radioAnswers" android:gravity="center|center_horizontal">
+
+            <RadioButton
+                    android:id="@+id/radioA1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Answer1" android:gravity="center|start|center_vertical"/>
+
+            <RadioButton
+                    android:id="@+id/radioA2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Answer2" android:gravity="center|start"/>
+
+            <RadioButton
+                    android:id="@+id/radioA3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Answer3" android:gravity="start|center_vertical"/>
+
+            <RadioButton
+                    android:id="@+id/radioA4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Answer4" android:gravity="center|start"/>
+
+        </RadioGroup>
+        <Button
+                android:text="@string/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnSubmit"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:visibility="invisible"
+                android:gravity="center"/>
+    </LinearLayout>
+
+</FrameLayout>

@@ -2,7 +2,7 @@
     <string name="app_name">QuizDroid</string>
     <string name="select_a_topic">Select A Topic</string>
     <string name="lets_take_a_quiz">Let\'s Take A Quiz!</string>
-    <string name="marvel_super_heros">Marvel Super Heroes</string>
+    <string name="marvel_super_heroes">Marvel Super Heroes</string>
     <string name="math">Math</string>
     <string name="physics">Physics</string>
     <string name="topic_overview">Topic Overview</string>
@@ -10,4 +10,7 @@
     <string name="question_1">Question 1</string>
     <string name="submit">Submit</string>
     <string name="packageName">edu.washington.minhsuan.quizdroid</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

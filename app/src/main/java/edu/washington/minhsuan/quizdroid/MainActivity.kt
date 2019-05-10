@@ -1,9 +1,9 @@
 package edu.washington.minhsuan.quizdroid
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.content.Intent
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         val mathAnswers = arrayOf(
             "1", "2", "3", "4",
             "2", "3", "5", "6",
-            "25.3", "25.5", "25", "12.25"
+            "25.3", "25.5", "25.0", "12.25"
         )
         val mathCorrect = arrayOf("2", "6", "25.5")
 
@@ -45,14 +45,13 @@ class MainActivity : AppCompatActivity() {
         )
         val marvelCorrect = arrayOf("Spider-Man", "4", "Light Stone", "Wakanda", "Sheild")
 
-
         val mathButton = findViewById<Button>(R.id.btnMath)
         mathButton.setOnClickListener {
+            val topic = "Math"
             val unit = if (mathQuestions.size == 1) " is " else " are "
-            val intent = Intent(this@MainActivity, TopicActivity::class.java)
+            val intent = Intent(this@MainActivity, MultiActivity::class.java)
             intent.putExtra("Title", "Math")
-            intent.putExtra("Overview", "This is intended to test your basic knowledge of Math.\n\n" +
-                    "There" + unit + mathQuestions.size + " question(s)")
+            intent.putExtra("Overview", getOverview(topic, mathQuestions.size, unit))
             intent.putExtra("Questions", mathQuestions)
             intent.putExtra("Answers", mathAnswers)
             intent.putExtra("Correct", mathCorrect)
@@ -62,10 +61,10 @@ class MainActivity : AppCompatActivity() {
         val physicsButton = findViewById<Button>(R.id.btnPhysics)
         physicsButton.setOnClickListener {
             val unit = if (physicsQuestions.size == 1) " is " else " are "
-            val intent = Intent(this@MainActivity, TopicActivity::class.java)
+            val topic = "Physics"
+            val intent = Intent(this@MainActivity, MultiActivity::class.java)
             intent.putExtra("Title", "Physics")
-            intent.putExtra("Overview", "This is intended to test your basic knowledge of Physics\n\n" +
-                    "There is " + physicsQuestions.size + " question(s)")
+            intent.putExtra("Overview", getOverview(topic, physicsQuestions.size, unit))
             intent.putExtra("Questions", physicsQuestions)
             intent.putExtra("Answers", physicsAnswers)
             intent.putExtra("Correct", physicsCorrect)
@@ -75,14 +74,19 @@ class MainActivity : AppCompatActivity() {
         val marvelButton = findViewById<Button>(R.id.btnMarvelHeroes)
         marvelButton.setOnClickListener {
             val unit = if (marvelQuestions.size == 1) " is " else " are "
-            val intent = Intent(this@MainActivity, TopicActivity::class.java)
+            val topic = "Marvel Super Heroes"
+            val intent = Intent(this@MainActivity, MultiActivity::class.java)
             intent.putExtra("Title", "Marvel Super Heroes")
-            intent.putExtra("Overview", "This is intended to test your basic knowledge of Marvel Super Heroes\n\n" +
-                    "There is " + marvelQuestions.size + " question(s)")
+            intent.putExtra("Overview", getOverview(topic, marvelQuestions.size, unit))
             intent.putExtra("Questions", marvelQuestions)
             intent.putExtra("Answers", marvelAnswers)
             intent.putExtra("Correct", marvelCorrect)
             startActivity(intent)
         }
+    }
+
+    private fun getOverview(topic: String, number: Int, unit: String): String {
+        return "This is intended to test your basic knowledge of $topic\n\n" +
+                "There$unit$number question(s)"
     }
 }

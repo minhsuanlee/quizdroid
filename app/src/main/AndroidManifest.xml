@@ -16,23 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".TopicActivity">
+        <activity android:name=".MultiActivity">
             <!-- for action bar back -->
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="edu.washington.minhsuan.quizdroid.MainActivity" />
-        </activity>
-        <activity android:name=".QuestionActivity">
-            <!-- for action bar back -->
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="edu.washington.minhsuan.quizdroid.TopicActivity" />
-        </activity>
-        <activity android:name=".AnswerActivity">
-            <!-- for action bar back -->
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="edu.washington.minhsuan.quizdroid.QuestionActivity" />
+                    android:value="edu.washington.minhsuan.quizdroid.MultiActivity" />
         </activity>
     </application>
 
