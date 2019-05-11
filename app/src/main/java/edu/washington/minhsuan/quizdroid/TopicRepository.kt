@@ -108,6 +108,79 @@ class QuizRepo(): TopicRepository {
     }
 }
 
+class JsonRepo(): TopicRepository {
+    val TAG = "JsonRepo"
+
+    private val NUM_CHOICES = 4
+
+    private var topicMap: HashMap<String, Topic> = hashMapOf()
+
+    private var topics: ArrayList<String> = arrayListOf()
+
+    private var shorts: ArrayList<String> = arrayListOf()
+
+    override fun makeTopic(title: String, shortDescription: String, longOverview: String,
+                           questions: ArrayList<String>, answers: ArrayList<String>,
+                           corrects: ArrayList<String>): Topic {
+        val questionBundle = makeQuestions(questions, answers, corrects)
+
+        return Topic(title, shortDescription, longOverview, questionBundle)
+    }
+
+    override fun makeQuestions(questions: ArrayList<String>, answers: ArrayList<String>,
+                               corrects: ArrayList<String>): ArrayList<Quiz> {
+        val numQuestions = questions.size
+        var qArray = arrayListOf<Quiz>()
+        var aArray: ArrayList<Array<String>> = arrayListOf()
+
+        for (i in 0 until numQuestions) {
+            val startIndex = i * NUM_CHOICES
+            val endIndex = NUM_CHOICES * (i + 1)
+            aArray.add(answers.slice(startIndex until endIndex).toTypedArray())
+        }
+
+        for (i in 0 until aArray.size) {
+            qArray.add(Quiz(questions[i], aArray[i], corrects[i]))
+        }
+
+        return qArray
+    }
+
+    override fun getBundle(topic: String): Topic? {
+        return topicMap[topic]
+    }
+
+    override fun getOverview(topic: String, number: Int): String {
+        val unit = if (number == 1) " is " else " are "
+        return "This is intended to test your basic knowledge of $topic\n\n" +
+                "There$unit$number question(s)"
+    }
+
+    fun getShortDes(): ArrayList<String> {
+        return shorts
+    }
+
+    fun getTopics(): ArrayList<String> {
+        return topics
+    }
+
+    fun setMap(titles: ArrayList<String>, bundles: ArrayList<Topic>) {
+        val hashmap = hashMapOf<String, Topic>()
+        for (i in 0 until titles.size) {
+            hashmap.put(titles[i], bundles[i])
+        }
+        topicMap = hashmap
+    }
+
+    fun setTopic(titles: ArrayList<String>) {
+        topics = titles
+    }
+
+    fun setShorts(shorts: ArrayList<String>) {
+        this.shorts = shorts
+    }
+}
+
 class Quiz(private val question: String, private val answers: Array<String>, private val correct: String) {
     fun getQuestion(): String { return question }
 

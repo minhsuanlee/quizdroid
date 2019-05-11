@@ -31,44 +31,43 @@ class MainActivity : AppCompatActivity() {
 
         // get repository
         val quizRepo = singletonApp.topicRepo
+        val shorts = quizRepo.getShortDes()
+        val topics = quizRepo.getTopics()
 
-        val (math, phys, marvel) = quizRepo.getShortDes()
-
-        findViewById<TextView>(R.id.txtMath).text = math
-        findViewById<TextView>(R.id.txtPhys).text = phys
-        findViewById<TextView>(R.id.txtMarvel).text = marvel
+        findViewById<TextView>(R.id.txtMath).text = shorts[0]
+        findViewById<TextView>(R.id.txtPhys).text = shorts[1]
+        findViewById<TextView>(R.id.txtMarvel).text = shorts[2]
 
         val mathButton = findViewById<Button>(R.id.btnMath)
+        mathButton.text = topics[0]
         mathButton.setOnClickListener {
-            startIntent("Math", quizRepo)
+            startIntent(topics[0], quizRepo)
         }
 
         val physicsButton = findViewById<Button>(R.id.btnPhysics)
+        physicsButton.text = topics[1]
         physicsButton.setOnClickListener {
-            startIntent("Physics", quizRepo)
+            startIntent(topics[1], quizRepo)
         }
 
         val marvelButton = findViewById<Button>(R.id.btnMarvelHeroes)
+        marvelButton.text = topics[2]
         marvelButton.setOnClickListener {
-            startIntent("Marvel Super Heroes", quizRepo)
+            startIntent(topics[2], quizRepo)
         }
     }
 
-    private fun startIntent(topic: String, quizRepo: QuizRepo) {
+    private fun startIntent(topic: String, quizRepo: JsonRepo) {
         val bundle = quizRepo.getBundle(topic)
         if (bundle != null) {
             val (questions, answers, corrects) =
                 getQuestions(bundle.getQuestions())
             val intent = Intent(this@MainActivity, MultiActivity::class.java)
             intent.putExtra("Title", topic)
-            intent.putExtra("Short", bundle.getShortOverview())
             intent.putExtra("Overview", bundle.getLongDes())
             intent.putExtra("Questions", questions)
             intent.putExtra("Answers", answers)
             intent.putExtra("Correct", corrects)
-            Log.v(TAG, Arrays.toString(questions))
-            Log.v(TAG, Arrays.toString(answers))
-            Log.v(TAG, Arrays.toString(corrects))
             startActivity(intent)
         }
     }
