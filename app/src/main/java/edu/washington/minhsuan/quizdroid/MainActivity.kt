@@ -2,6 +2,7 @@ package edu.washington.minhsuan.quizdroid
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import java.util.*
@@ -25,6 +27,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setupPermissions()
+
+        val preference = getPreferences(Context.MODE_PRIVATE)
+        val saveBtn = findViewById<Button>(R.id.btnSave)
+        val url = findViewById<EditText>(R.id.txtUrl)
+        val mode = findViewById<EditText>(R.id.txtMode)
+        url.hint = preference.getString("url", "Please type your url here.")
+        val num = preference.getInt("min", 0)
+        if (num == 0) {
+            mode.hint = "Please type a number"
+        } else {
+            mode.hint = num.toString()
+        }
+        saveBtn.setOnClickListener {
+            preference.edit().putString("url", url.text.toString()).apply()
+            preference.edit().putInt("min", mode.text.toString().toInt()).apply()
+        }
 
         // get singleton of app
         val singletonApp = QuizApp.instance
