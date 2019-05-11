@@ -4,6 +4,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.content.Intent
+import android.util.Log
+import android.widget.TextView
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,99 +17,72 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val mathQuestions = arrayOf(
-            "1 + 1 = ?",
-            "2 * 3 = ?",
-            "The average of first 50 natural numbers is ?"
-        )
-        val mathAnswers = arrayOf(
-            "1", "2", "3", "4",
-            "2", "3", "5", "6",
-            "25.3", "25.5", "25.0", "12.25"
-        )
-        val mathCorrect = arrayOf("2", "6", "25.5")
-        val mathOverview = getOverview("Math", mathQuestions.size)
-        saveTopicInRepository("Math", mathOverview, mathQuestions, mathAnswers, mathCorrect)
-
-        val physicsQuestions = arrayOf("With the increase of pressure, the boiling point of any substance:")
-        val physicsAnswers = arrayOf("Increases", "Decreases", "Remains Same", "Becomes zero")
-        val physicsCorrect = arrayOf("Increases")
-        val physicsOverview = getOverview("Physics", physicsQuestions.size)
-        saveTopicInRepository("Physics", physicsOverview, physicsQuestions, physicsAnswers, physicsCorrect)
-
-        val marvelQuestions = arrayOf(
-            "Which super hero is turned into dust in Avengers: Infinity War",
-            "How many Avengers movies are there?",
-            "Which one of the following is NOT one of the infinity stones?",
-            "Which country is Black Panther from?",
-            "What does Captain America carry with him into battle?"
-        )
-        val marvelAnswers = arrayOf(
-            "Iron Man", "Spider-Man", "Thor", "Nebula",
-            "1", "2", "3", "4",
-            "Reality Stone", "Mind Stone", "Light Stone", "Time Stone",
-            "Genosha", "Latvria", "Transia", "Wakanda",
-            "Sheild", "Axe", "Sword", "Gun"
-        )
-        val marvelCorrect = arrayOf("Spider-Man", "4", "Light Stone", "Wakanda", "Sheild")
-        val marvelOverview = getOverview("Math", marvelQuestions.size)
-        saveTopicInRepository("Marvel Super Heroes", marvelOverview, marvelQuestions, marvelAnswers, marvelCorrect)
-
-        val mathButton = findViewById<Button>(R.id.btnMath)
-        mathButton.setOnClickListener {
-            val topic = "Math"
-            val unit = if (mathQuestions.size == 1) " is " else " are "
-            val intent = Intent(this@MainActivity, MultiActivity::class.java)
-            intent.putExtra("Title", "Math")
-            intent.putExtra("Overview", getOverview(topic, mathQuestions.size, unit))
-            intent.putExtra("Questions", mathQuestions)
-            intent.putExtra("Answers", mathAnswers)
-            intent.putExtra("Correct", mathCorrect)
-            startActivity(intent)
-        }
-
-        val physicsButton = findViewById<Button>(R.id.btnPhysics)
-        physicsButton.setOnClickListener {
-            val unit = if (physicsQuestions.size == 1) " is " else " are "
-            val topic = "Physics"
-            val intent = Intent(this@MainActivity, MultiActivity::class.java)
-            intent.putExtra("Title", "Physics")
-            intent.putExtra("Overview", getOverview(topic, physicsQuestions.size, unit))
-            intent.putExtra("Questions", physicsQuestions)
-            intent.putExtra("Answers", physicsAnswers)
-            intent.putExtra("Correct", physicsCorrect)
-            startActivity(intent)
-        }
-
-        val marvelButton = findViewById<Button>(R.id.btnMarvelHeroes)
-        marvelButton.setOnClickListener {
-            val unit = if (marvelQuestions.size == 1) " is " else " are "
-            val topic = "Marvel Super Heroes"
-            val intent = Intent(this@MainActivity, MultiActivity::class.java)
-            intent.putExtra("Title", "Marvel Super Heroes")
-            intent.putExtra("Overview", getOverview(topic, marvelQuestions.size, unit))
-            intent.putExtra("Questions", marvelQuestions)
-            intent.putExtra("Answers", marvelAnswers)
-            intent.putExtra("Correct", marvelCorrect)
-            startActivity(intent)
-        }
-    }
-
-    private fun getOverview(topic: String, number: Int): String {
-        val unit = if (number == 1) " is " else " are "
-        return "This is intended to test your basic knowledge of $topic\n\n" +
-                "There$unit$number question(s)"
-    }
-
-    fun saveTopicInRepository(title: String, overview: String, questions: Array<String>,
-                              answers: Array<String>, correct: Array<String>) {
         // get singleton of app
         val singletonApp = QuizApp.instance
 
         // get repository
-        val topicRepository = singletonApp.dataManager
+        val quizRepo = singletonApp.topicRepo
 
-        // add name to repository
-        topicRepository.add(title, overview, questions, answers, correct)
+        val (math, phys, marvel) = quizRepo.getShortDes()
+
+        findViewById<TextView>(R.id.txtMath).text = math
+        findViewById<TextView>(R.id.txtPhys).text = phys
+        findViewById<TextView>(R.id.txtMarvel).text = marvel
+
+        val mathButton = findViewById<Button>(R.id.btnMath)
+        mathButton.setOnClickListener {
+            startIntent("Math", quizRepo)
+        }
+
+        val physicsButton = findViewById<Button>(R.id.btnPhysics)
+        physicsButton.setOnClickListener {
+            startIntent("Physics", quizRepo)
+        }
+
+        val marvelButton = findViewById<Button>(R.id.btnMarvelHeroes)
+        marvelButton.setOnClickListener {
+            startIntent("Marvel Super Heroes", quizRepo)
+        }
+    }
+
+    private fun startIntent(topic: String, quizRepo: QuizRepo) {
+        val bundle = quizRepo.getBundle(topic)
+        if (bundle != null) {
+            val (questions, answers, corrects) =
+                getQuestions(bundle.getQuestions())
+            val intent = Intent(this@MainActivity, MultiActivity::class.java)
+            intent.putExtra("Title", topic)
+            intent.putExtra("Short", bundle.getShortOverview())
+            intent.putExtra("Overview", bundle.getLongDes())
+            intent.putExtra("Questions", questions)
+            intent.putExtra("Answers", answers)
+            intent.putExtra("Correct", corrects)
+            Log.v(TAG, Arrays.toString(questions))
+            Log.v(TAG, Arrays.toString(answers))
+            Log.v(TAG, Arrays.toString(corrects))
+            startActivity(intent)
+        }
+    }
+
+    // questions, answers, corrects
+    private fun getQuestions(questionBundle: ArrayList<Quiz>): Triple<Array<String>, Array<String>, Array<String>> {
+        var questions = arrayListOf<String>()
+        var answer = arrayListOf<Array<String>>()
+        var corrects = arrayListOf<String>()
+        var answers = arrayListOf<String>()
+
+        for (question in questionBundle) {
+            questions.add(question.getQuestion())
+            answer.add(question.getAnswers())
+            corrects.add(question.getCorrect())
+        }
+
+        for (a in answer) {
+            for (s in a) {
+                answers.add(s)
+            }
+        }
+
+        return Triple(questions.toTypedArray(), answers.toTypedArray(), corrects.toTypedArray())
     }
 }

@@ -17,9 +17,11 @@ class MultiActivity : AppCompatActivity() {
         var answers: Array<String>
         var corrects: Array<String>
         var titleMsg: String
+        var shortMsg: String
 
         intent.extras.apply {
             titleMsg = this.getString("Title")
+            shortMsg = this.getString("Short")
             overviewMsg = this.getString("Overview")
             questions = this.getStringArray("Questions")
             answers = this.getStringArray("Answers")

@@ -1,8 +1,12 @@
 package edu.washington.minhsuan.quizdroid
 
+import android.util.Log
+
 class QuizApp : android.app.Application() {
 
-    lateinit var dataManager: TopicRepository
+    val TAG = "QuizApp"
+
+    lateinit var topicRepo: QuizRepo
         private set
 
     companion object {
@@ -12,8 +16,10 @@ class QuizApp : android.app.Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.v(TAG, "It's loaded and running!")
+
         instance = this
 
-        dataManager = TopicRepository()
+        topicRepo = QuizRepo()
     }
 }
