@@ -50,7 +50,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="@+id/glineH30"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/glineH40"
+            app:layout_constraintBottom_toTopOf="@+id/glineH45"
             app:layout_constraintEnd_toStartOf="@+id/glineV50"/>
     <Button
             android:text="@string/physics"
@@ -64,7 +64,7 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/glineH60"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="@+id/glineH40"
+            app:layout_constraintTop_toTopOf="@+id/glineH45"
             app:layout_constraintEnd_toStartOf="@+id/glineV50"/>
     <Button
             android:text="@string/marvel_super_heroes"
@@ -96,7 +96,7 @@
                                           app:layout_constraintGuide_percent=".3"/>
     <android.support.constraint.Guideline android:layout_width="wrap_content"
                                           android:layout_height="wrap_content"
-                                          android:id="@+id/glineH40"
+                                          android:id="@+id/glineH45"
                                           android:orientation="horizontal"
                                           app:layout_constraintGuide_percent=".4"/>
     <android.support.constraint.Guideline android:layout_width="wrap_content"
@@ -135,6 +135,7 @@
             android:layout_marginRight="8dp" app:layout_constraintBottom_toTopOf="@+id/btnMarvelHeroes"
             app:layout_constraintStart_toStartOf="parent" tools:text="@string/physics"/>
     <TextView
+            android:text="@string/marvel_super_heroes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtMarvel" app:layout_constraintBottom_toTopOf="@+id/glineH80"

@@ -1,21 +1,30 @@
 package edu.washington.minhsuan.quizdroid
 
+import android.Manifest
+import android.app.Activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
+    private val INTERNET_REQUEST_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setupPermissions()
 
         // get singleton of app
         val singletonApp = QuizApp.instance
@@ -85,4 +94,32 @@ class MainActivity : AppCompatActivity() {
 
         return Triple(questions.toTypedArray(), answers.toTypedArray(), corrects.toTypedArray())
     }
+
+    private fun setupPermissions() {
+        val permission = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.INTERNET)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "Permission to record denied")
+            makeRequest()
+        } else {
+            Toast.makeText(this, "Thank you for granting Internet Permission!", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun makeRequest() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.INTERNET), INTERNET_REQUEST_CODE)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            INTERNET_REQUEST_CODE -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "Permission has been denied by user")
+                } else {
+                    Log.i(TAG, "Permission has been granted by user")
+                }
+            }
+        }
+    }﻿
 }

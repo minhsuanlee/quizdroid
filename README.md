@@ -11,3 +11,4 @@ Application for Multiple-choice Quizzes
 
 ## Additional Info
  - Screenshots of the app running on emulators included in "screenshots" folder
+ - Ask users for permission to access the Internet
