@@ -1,7 +1,6 @@
 package edu.washington.minhsuan.quizdroid
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -14,13 +13,22 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import java.util.*
 import kotlin.collections.ArrayList
+import kotlinx.android.synthetic.main.activity_main.*
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
+import android.provider.Settings
+import android.content.DialogInterface
+import android.content.DialogInterface.BUTTON_NEUTRAL
+import android.os.Build
+import android.support.v7.app.AlertDialog
+
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
     private val INTERNET_REQUEST_CODE = 1
+    private val DEFAULT_URL = "http://tednewardsandbox.site44.com/questions.json"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,24 +36,52 @@ class MainActivity : AppCompatActivity() {
 
         setupPermissions()
 
-        val preference = getPreferences(Context.MODE_PRIVATE)
-        val saveBtn = findViewById<Button>(R.id.btnSave)
-        val url = findViewById<EditText>(R.id.txtUrl)
-        val mode = findViewById<EditText>(R.id.txtMode)
-        url.hint = preference.getString("url", "Please type your url here.")
-        val num = preference.getInt("min", 0)
-        if (num == 0) {
-            mode.hint = "Please type a number"
-        } else {
-            mode.hint = num.toString()
-        }
-        saveBtn.setOnClickListener {
-            preference.edit().putString("url", url.text.toString()).apply()
-            preference.edit().putInt("min", mode.text.toString().toInt()).apply()
+        if (!isNetworkConnected()) { Toast.makeText(this, "No Internet Connection.", Toast.LENGTH_SHORT) }
+
+        if (Settings.Global.AIRPLANE_MODE_ON == "airplane_mode_on") {
+            val builder = AlertDialog.Builder(this)
+            builder.apply {
+                setTitle("Turn off Airplane Mode?")
+                setMessage("Would you like to go to Settings and turn off Airplane Mode?")
+                setPositiveButton("Yes") { dialog, which -> startActivityForResult(Intent(Settings.ACTION_SETTINGS), 0) }
+                setNegativeButton("No") { dialog, which ->  Log.v(TAG, "They said no")}
+            }
+            builder.create().show()
         }
 
         // get singleton of app
         val singletonApp = QuizApp.instance
+        val preference = getPreferences(Context.MODE_PRIVATE)
+
+        val saveBtn = findViewById<Button>(R.id.btnSave)
+        val stopBtn = findViewById<Button>(R.id.btnStop)
+        val btnClear = findViewById<Button>(R.id.btnClear)
+
+        val url = findViewById<EditText>(R.id.txtUrl)
+        val mode = findViewById<EditText>(R.id.txtMode)
+
+        saveBtn.setOnClickListener {
+            var error = ""
+            if (url.text.isEmpty()) { error = "$error Please enter a url;\n"}
+            if (mode.text.isEmpty()) { error = "$error Please enter a delay time;"}
+
+            if (error.isNotEmpty()) {
+                Toast.makeText(this@MainActivity, error, Toast.LENGTH_SHORT).show()
+            } else {
+                preference.edit().putString("url", url.text.toString()).apply()
+                preference.edit().putInt("min", mode.text.toString().toInt()).apply()
+                handleStart(preference.getString("url", DEFAULT_URL), preference.getInt("min", 1))
+            }
+        }
+
+        stopBtn.setOnClickListener {
+            handleStop()
+        }
+
+        btnClear.setOnClickListener {
+            url.setText("")
+            mode.setText("")
+        }
 
         // get repository
         val quizRepo = singletonApp.topicRepo
@@ -73,6 +109,21 @@ class MainActivity : AppCompatActivity() {
         marvelButton.setOnClickListener {
             startIntent(topics[2], quizRepo)
         }
+    }
+
+    private fun handleStart(url: String, time: Int) {
+        Log.i(TAG, "Start pressed")
+        btnSave.isEnabled = false
+        btnStop.isEnabled = true
+        val intent = Intent(this@MainActivity, UrlService::class.java)
+        intent.putExtra("Url", url)
+        intent.putExtra("Time", time)
+        startService(intent)
+    }
+
+    fun handleStop() {
+        Log.i(TAG, "Stop pressed")
+        stopService(Intent(this@MainActivity, UrlService::class.java))
     }
 
     private fun startIntent(topic: String, quizRepo: JsonRepo) {
@@ -138,5 +189,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun isNetworkConnected(): Boolean {
+        val cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (cm.activeNetworkInfo == null) { return false } else { return cm.activeNetworkInfo.isConnected }
     }
 }

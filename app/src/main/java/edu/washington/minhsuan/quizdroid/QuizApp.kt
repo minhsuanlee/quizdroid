@@ -1,19 +1,13 @@
 package edu.washington.minhsuan.quizdroid
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import org.json.JSONObject
-import java.io.IOException
 import org.json.JSONArray
-import java.util.*
-
+import java.io.IOException
 
 class QuizApp : android.app.Application() {
 
-    val TAG = "QuizApp"
-
-    private lateinit var sharedPreferences: SharedPreferences
+    private val TAG = "QuizApp"
 
     lateinit var topicRepo: JsonRepo
         private set
@@ -28,9 +22,6 @@ class QuizApp : android.app.Application() {
         const val TEXT = "text"
         const val ANSWER = "answer"
         const val ANSWERS = "answers"
-
-        private const val USER_PREF_KEY = "USER_PREFERENCES_KEY"
-        private const val TIMESTAMP_KEY = "timestamp"
     }
 
     override fun onCreate() {
@@ -41,28 +32,10 @@ class QuizApp : android.app.Application() {
 
         topicRepo = JsonRepo()
 
-        readWriteJson()
         readJson()
     }
 
-    fun readWriteJson() {
-        sharedPreferences = getSharedPreferences(USER_PREF_KEY, Context.MODE_PRIVATE)
-
-        // Get current time stamp from SharedPreferences & print it
-        val defaultErrorValue = -1L
-        val timestamp = sharedPreferences.getLong("timestamp", defaultErrorValue)
-        Log.i(TAG, "Current Shared preferences of time stamp = $timestamp")
-
-        // Updated timestamp in SharedPreferences & print it
-        sharedPreferences
-            .edit()
-            .putLong(TIMESTAMP_KEY, System.currentTimeMillis() + 1000)
-            .apply()
-        Log.i(TAG, "New shared preferences of time stamp = ${sharedPreferences.getLong("timestamp",
-            defaultErrorValue)}")
-    }
-
-    fun readJson() {
+    private fun readJson() {
         val jsonString: String? = try {
             // grab file from assets folder & read it to a String
             val inputStream = assets.open(JSON_FILE_NAME)
@@ -76,7 +49,7 @@ class QuizApp : android.app.Application() {
             null
         }
 
-        jsonString?.let {
+        jsonString.let {
             // Create json from string
             val jsonArray = JSONArray(jsonString)
             val topics = arrayListOf<String>()
