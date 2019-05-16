@@ -7,7 +7,6 @@
 
     <!-- Keep in sync with build.gradle -->
     <uses-sdk
-        android:minSdkVersion="8"
         tools:ignore="GradleOverrides" />
 
     <application />
